@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>ESLint</title>
+
+    <meta name="description" content="Lyntale om ESLint for faggruppen JS-plattform i BEKK">
+    <meta name="author" content="Ingar Almklov">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/ingara.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+
+    <link href='https://fonts.googleapis.com/css?family=Fira+Sans:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Fira+Mono' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <!-- Any section element inside of this container is displayed as a slide -->
+        <div class="slides">
+
+            <section>
+                <h1>ESLint</h1>
+                <small><a href="http://eslint.org/">http://eslint.org/</a></small>
+            </section>
+
+            <section>
+                <h2>Hva er en linter?</h2>
+                <p class="fragment">Program som sjekker kildekode for feil/sannsynlige bugs</p>
+                <p class="fragment">
+                    <span><q>Lint</q></span> fra Bell Labs - Unix V7 i 1979 - laget for C
+                </p>
+
+                <aside class="notes">
+                    * boolsk uttrykk alltid TRUE
+                    * switch har ingen DEFAULT
+                    * Nyere lintere brukes også for å håndheve stilregler
+                </aside>
+            </section>
+
+            <section>
+                <h2>Hvorfor</h2>
+                <ul>
+                    <li class="fragment">Vi gjør alle feil <span class="fragment">hele tiden</span></li>
+                    <li class="fragment">Unødvendige runtime-feil suger</li>
+                    <li class="fragment">Konsistent kodestil</li>
+                </ul>
+                <aside class="notes">
+                    Hvorfor ikke fange opp mange av disse feilene mens du skriver heller enn runtime?
+                </aside>
+            </section>
+
+            <section>
+                <h2>Lintere for JavaScript</h2>
+                <div class="fragment current-visible" style="height: 0">
+                    <p>JSLint</p>
+                    <blockquote cite="http://www.jslint.com/help.html">
+                        [...] will hurt your feelings. Side effects may include headache, irritability, dizziness, snarkiness, stomach pain, defensiveness, dry mouth, cleaner code, and a reduced error rate.
+                    </blockquote>
+                </div>
+                <div class="fragment current-visible" style="height: 0">
+                    <p>JSHint</p>
+                    <blockquote>
+                        Possible strict validation
+                    </blockquote>
+                </div>
+                <div class="fragment current-visible" style="height: 0">
+                    <p>JSCS</p>
+                    <blockquote>
+                        { "preset": "crockford" }
+                    </blockquote>
+                </div>
+
+                <aside class="notes">
+                    <ul>
+                        <li>
+                            JSLint
+                            Den første, laget av Douglas Crockford i 2002.
+                            Lite fleksibelt, følger Crockfords personlige preferanser.
+                            Fint hvis du er enig med ham i alt.
+                        </li>
+                        <li>
+                            JSHint
+                            Fork av JSLint for å være mer konfigurerbart.
+                            Har konfigurasjonsfil. Støtter ikke custom regler.
+                            Støtter ikke stilregler (indentering osv).
+                            Må bruke JSXHint for å støtte JSX.
+                        </li>
+                        <li>
+                            JSCS - JavaScript Code Style checker
+                            Brukes sammen med JSHint. Støtter presets.
+                        </li>
+                    </ul>
+                </aside>
+            </section>
+
+            <section>
+                <h2>ESLint - hvem?</h2>
+                <p>Opprinnelig laget av Nicholas C. Zakas i juni 2013</p>
+                <blockquote>It can’t be all that hard to create a pluggable JavaScript linter using an AST.</blockquote>
+
+                <aside class="notes">
+                    <ul>
+                        <li>
+                            Bidratt til JSHint, medskaper av CSS Lint
+                        </li>
+                        <li>
+                            Han hadde akkurat lært seg Esprima og ASTs (vet alle hva AST er?)
+                        </li>
+                    </ul>
+
+                </aside>
+            </section>
+
+            <section>
+                <h2>ESLint - hvorfor?</h2>
+                    <ul>
+                        <li class="fragment">Kun èn runtime</li>
+                        <li class="fragment">Regelkonfigurasjon</li>
+                        <li class="fragment">Feilnivåer</li>
+                        <li class="fragment">Egne regler</li>
+                    </ul>
+
+                <aside class="notes">
+                    <ul>
+                        <li>
+                            Runtime - Rhino (Mozilla JavaScript runtime) og Node - mye ekstrajobb
+                        </li>
+                        <li>
+                            Regler - noen `true` for å enable, andre `false` (etterslep fra JSLint) - middels dokumentasjon
+                        </li>
+                        <li>
+                            Feilnivå - i JSHint var alt error - ESLint har warning
+                        </li>
+                        <li>
+                            Egne - mye diskusjon i JSHint om hvilke regler som skulle være med - heller lage et pluggbart system
+                        </li>
+                    </ul>
+                </aside>
+            </section>
+
+            <section>
+                <h2>Oppsett</h2>
+                <pre><code class="hljs" data-trim>
+$ npm install -g eslint
+$ eslint foo.js
+                </code></pre>
+
+                <aside class="notes">
+                    Ofte fint som dev dependency (atom-eslint bruker denne)
+                </aside>
+            </section>
+
+            <section>
+                <h2>Men ingenting skjer?</h2>
+                <p class="fragment">Default: ingen regler skrudd på</p>
+                <p class="fragment">Tre valg:</p>
+                <ol class="fragment">
+                    <li>Velge helt selv - <a href="http://eslint.org/docs/rules/">http://eslint.org/docs/rules/</a></li>
+                    <li>Wizard<pre><code class="hljs">$ eslint --init</code></pre></li>
+                    <li>Arve ferdig oppsett - f.eks. <q>eslint:recommended</q></li>
+                </ol>
+
+                <aside class="notes">
+                    Kan overstyre de ferdige oppsettene
+                </aside>
+            </section>
+
+            <section>
+                <h2>.eslintrc</h2>
+                <smal><a href="http://eslint.org/docs/user-guide/configuring">http://eslint.org/docs/user-guide/configuring</a></smal>
+                <pre><code class="hljs" data-trim>
+{
+    "extends": "eslint:recommended",
+    "env": {
+        "browser": true
+    },
+    "plugins": [
+        "filenames"
+    ],
+    "globals": {
+        "globalVariabel": true
+    },
+    "parser": "babel-eslint",
+    "rules": {
+        "semi": 2
+    }
+}
+                </code></pre>
+                <aside class="notes">
+                    <ul>
+                        <li>
+                            extends - 266 pakker på npm - AirBnb mest nedlastet
+                        </li>
+                        <li>
+                            env - browser, node, jasmin, mocha, jquery, meteor
+                        </li>
+                        <li>
+                            rules - neste slide
+                        </li>
+                        <li>
+                            globals - true; variablen kan overskrives - false; variabelen kan ikke overskrives
+                        </li>
+                        <li>
+                            parser - ESLint bruker Espree - esprima, esprima-fb ( FB-proprietær syntax), babel-eslint
+                        </li>
+                        <li>
+                            plugins - custom regler - f.eks. alle propTypes må være definert
+                        </li>
+                    </ul>
+
+                </aside>
+            </section>
+
+            <section>
+                <h2>Regler</h2>
+                <small><a href="http://eslint.org/docs/rules">http://eslint.org/docs/rules</a></small>
+                <pre><code class="hljs">
+{
+    "rules": {
+        "curly": 0,
+        "eqeqeq": 1,
+        "quotes": [2, "double"],
+        "react/prop-types": 0
+    }
+}
+                </code></pre>
+
+                <aside class="notes">
+                    <ul>
+                        <li>0 - skru regel av</li>
+                        <li>1 - regel er bare advarsel</li>
+                        <li>2 - error - exit code 1</li>
+                        <li>curly - curly placement</li>
+                        <li>Ekstra parametere spesifiseres i array, som for quotes</li>
+                    </ul>
+                </aside>
+            </section>
+
+            <section>
+                <h2>ES2015 + React = ❤</h2>
+                <small><a href="http://eslint.org/docs/user-guide/configuring#specifying-language-options">http://eslint.org/docs/user-guide/configuring#specifying-language-options</a></small>
+                <pre><code class="hljs">
+{
+    "ecmaFeatures": {
+        "arrowFunctions": true,
+        "defaultParams": true,
+        "destructuring": true,
+        "jsx": true,
+        "modules": true
+    }
+}
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Oppsett basert på AirBnb</h2>
+                <pre><code class="hljs" data-trim>
+$ npm install --save-dev eslint babel-eslint eslint-plugin-react\
+                         eslint-config-airbnb
+                </code></pre>
+                <pre><code class="hljs" data-trim>
+{
+    "extends": "airbnb",
+    "rules": {
+        // Four spaces
+        "indent": [2, 4]
+    }
+}
+                </code></pre>
+
+                <aside class="notes">
+                    <ul>
+                        <li>
+                            babel-eslint brukes fordi ESLint ikke støtter all syntaxen som babel har
+                        </li>
+                        <li>
+                            Gotcha: airbnb har `indent: [2,2]` - `indent: 2` vil defor ikke overskrive
+                        </li>
+                    </ul>
+                </aside>
+            </section>
+
+            <section>
+                <h2>Bruke ESLint</h2>
+                <small><a href="http://eslint.org/docs/user-guide/integrations">http://eslint.org/docs/user-guide/integrations</a></small>
+
+                <table>
+                    <tr>
+                        <th>Editor</th>
+                        <th>Byggesystem</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul>
+                                <li>Vim</li>
+                                <li>Atom</li>
+                                <li>Sublime Text 3</li>
+                                <li>IntelliJ IDEA</li>
+                                <li>...</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Gulp</li>
+                                <li>Browserify</li>
+                                <li>Webpack</li>
+                                <li>Sails.js</li>
+                                <li>...</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+
+                <aside class="notes">
+                    Git hooks
+                </aside>
+            </section>
+
+            <section>
+                <h1>Takk</h1>
+            </section>
+
+            </div>
+
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+
+        // Full list of configuration options available at:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Optional reveal.js plugins
+            dependencies: [
+                { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+                { src: 'plugin/zoom-js/zoom.js', async: true },
+                { src: 'plugin/notes/notes.js', async: true }
+            ]
+        });
+
+        </script>
+
+    </body>
+    </html>
